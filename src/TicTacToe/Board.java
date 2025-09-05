@@ -12,8 +12,8 @@ public class Board {
     }
 
     public boolean place(int x, int y, char marker) {
-        if (x < 0 || x > 2 || y < 0 || y > 2) return false; // außerhalb
-        if (!isCellEmpty(x, y)) return false;               // schon belegt
+        if (x < 0 || x > 2 || y < 0 || y > 2) return false;
+        if (!isCellEmpty(x, y)) return false;
         cells[x][y] = marker;
         return true;
     }
@@ -37,14 +37,5 @@ public class Board {
             if (i < 2) System.out.println("-----");
         }
     }
-
-    public char[][] snapshot() {
-        char[][] copy = new char[3][3];
-        for (int i=0;i<3;i++) {
-            for (int j=0;j<3;j++) {
-                copy[i][j] = cells[i][j];
-            }
-        }
-        return copy;
-    }
 }
+
