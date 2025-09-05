@@ -1,5 +1,4 @@
 package TicTacToe;
-
 import java.util.Scanner;
 
 public class TicTacToe {
@@ -23,19 +22,21 @@ public class TicTacToe {
             System.out.println("Current Player: " + currentPlayer.getMarker());
             board.print();
 
-            // US-3: Winner/Draw erkennen
+            // US-3: Prüfen, ob jemand gewonnen hat
             if (hasWinner()) {
                 System.out.println("Winner: " + currentPlayer.getMarker());
-                running = askNewGame(sc); // US-4
-                continue;
-            }
-            if (board.isFull()) {
-                System.out.println("Draw.");
-                running = askNewGame(sc); // US-4
+                running = false;
                 continue;
             }
 
-            // Eingabe Zug
+            // US-3: Prüfen auf Unentschieden
+            if (board.isFull()) {
+                System.out.println("Draw.");
+                running = false;
+                continue;
+            }
+
+            // Eingabe
             System.out.print("row (0-2): ");
             int x = Integer.parseInt(sc.nextLine().trim());
             System.out.print("column (0-2): ");
@@ -47,6 +48,7 @@ public class TicTacToe {
                 continue;
             }
 
+            // Spieler wechseln, wenn noch kein Gewinner
             if (!hasWinner()) {
                 switchCurrentPlayer();
             }
@@ -56,32 +58,21 @@ public class TicTacToe {
         System.out.println("Game ended.");
     }
 
-    // US-4: Neustart
-    private boolean askNewGame(Scanner sc) {
-        System.out.print("New game? (y/n): ");
-        String input = sc.nextLine().trim().toLowerCase();
-        if (input.equals("y")) {
-            board.clear();
-            currentPlayer = player1; // X beginnt wieder
-            return true;
-        }
-        return false;
-    }
-
     public void switchCurrentPlayer() {
         currentPlayer = (currentPlayer == player1) ? player2 : player1;
     }
 
-    // US-3: Gewinnlogik
     public boolean hasWinner() {
         char[][] b = board.snapshot();
         for (char m : new char[]{'X','O'}) {
-            for (int i=0; i<3; i++) {
-                if (b[i][0]==m && b[i][1]==m && b[i][2]==m) return true; // Zeile
-                if (b[0][i]==m && b[1][i]==m && b[2][i]==m) return true; // Spalte
+
+            for (int i = 0; i < 3; i++) {
+                if (b[i][0] == m && b[i][1] == m && b[i][2] == m) return true;
+                if (b[0][i] == m && b[1][i] == m && b[2][i] == m) return true;
             }
-            if (b[0][0]==m && b[1][1]==m && b[2][2]==m) return true; // Diagonale
-            if (b[0][2]==m && b[1][1]==m && b[2][0]==m) return true; // Gegen-Diagonale
+            // Diagonalen prüfen
+            if (b[0][0] == m && b[1][1] == m && b[2][2] == m) return true;
+            if (b[0][2] == m && b[1][1] == m && b[2][0] == m) return true;
         }
         return false;
     }
